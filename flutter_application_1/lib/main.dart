@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
         title: 'Calorie Counter App',
         theme: ThemeData(
           useMaterial3: true,
-          colorScheme: ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 34, 78, 255)),
+          colorScheme: ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 81, 132, 209)),
         ),
         home: MyHomePage(),
       ),
@@ -39,23 +39,51 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
+    var randomCalorie = appState.curr;
 
     return Scaffold(
-      body: Column(
-        children: [
-          Text('Calorie Counter'),
-          Text('Click to add more calories.'),
-          Text(appState.curr.toString()),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('Calorie Counter'),
+            Text('Click Next to add more calories.'),
+            CalorieNum(randomCalorie: randomCalorie),
+            SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: () {
+                //print('Calories Added!');
+                appState.getNext();
+              },
+              child: Text('Next'),
+            ),
+      
+          ],
+        ),
+      ),
+    );
+  }
+}
 
-          ElevatedButton(
-            onPressed: () {
-              //print('Calories Added!');
-              appState.getNext();
-            },
-            child: Text('Next'),
-          ),
+class CalorieNum extends StatelessWidget {
+  const CalorieNum({
+    super.key,
+    required this.randomCalorie,
+  });
 
-        ],
+  final int randomCalorie;
+
+  @override
+  Widget build(BuildContext context) {
+    var theme = Theme.of(context); 
+    var style = theme.textTheme.displayMedium!.copyWith(
+      color: theme.colorScheme.onPrimary,
+    );
+    return Card(
+      color: theme.colorScheme.primary,
+      child: Padding(
+        padding: const EdgeInsets.all(60),
+        child: Text(randomCalorie.toString(), style:style),
       ),
     );
   }
