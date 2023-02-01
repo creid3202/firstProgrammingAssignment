@@ -1,6 +1,6 @@
-import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'dart:math';
 
 void main() {
   runApp(MyApp());
@@ -14,10 +14,10 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => MyAppState(),
       child: MaterialApp(
-        title: 'Namer App',
+        title: 'Calorie Counter App',
         theme: ThemeData(
           useMaterial3: true,
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrange),
+          colorScheme: ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 34, 78, 255)),
         ),
         home: MyHomePage(),
       ),
@@ -26,7 +26,13 @@ class MyApp extends StatelessWidget {
 }
 
 class MyAppState extends ChangeNotifier {
-  var current = WordPair.random();
+  var rng = Random();
+  var curr = 0;
+
+  void getNext() {
+    curr = rng.nextInt(3000);
+    notifyListeners();
+  }
 }
 
 class MyHomePage extends StatelessWidget {
@@ -37,12 +43,14 @@ class MyHomePage extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
-          Text('Calorie Counter:'),
-          Text(appState.current.asLowerCase),
+          Text('Calorie Counter'),
+          Text('Click to add more calories.'),
+          Text(appState.curr.toString()),
 
           ElevatedButton(
             onPressed: () {
-              print('button pressed!');
+              //print('Calories Added!');
+              appState.getNext();
             },
             child: Text('Next'),
           ),
